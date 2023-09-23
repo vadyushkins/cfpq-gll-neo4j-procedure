@@ -11,15 +11,11 @@ public class Terminal implements Symbol {
         this.hashCode = value.hashCode();
     }
 
-    public boolean match(Integer pos, String input) {
-        return input.startsWith(value, pos);
-    }
-
     @Override
     public String toString() {
         return "Terminal{" +
-                "value='" + value + '\'' +
-                '}';
+            "value='" + value + '\'' +
+            '}';
     }
 
     @Override

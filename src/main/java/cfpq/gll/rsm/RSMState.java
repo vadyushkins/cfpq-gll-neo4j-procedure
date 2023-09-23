@@ -24,11 +24,11 @@ public class RSMState {
     @Override
     public String toString() {
         return "RSMState{" +
-                "id=" + id +
-                ", nonterminal=" + nonterminal +
-                ", isStart=" + isStart +
-                ", isFinal=" + isFinal +
-                '}';
+            "id=" + id +
+            ", nonterminal=" + nonterminal +
+            ", isStart=" + isStart +
+            ", isFinal=" + isFinal +
+            '}';
     }
 
     @Override

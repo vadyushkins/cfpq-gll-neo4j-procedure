@@ -17,8 +17,8 @@ public class GetReachabilities {
     @Procedure(name = "cfpq.gll.withsppf.getReachabilities")
     @Description("Get reachability pairs in graph by cfg.")
     public Stream<ReachabilityPair> getReachabilities(
-            @Name("nodes") List<Node> nodes,
-            @Name("grammar") String grammar
+        @Name("nodes") List<Node> nodes,
+        @Name("grammar") String grammar
     ) {
         RSMState rsm = new RSMBuilder().createRSM(grammar);
         GLL parser = new GLL(rsm, nodes);
@@ -27,9 +27,7 @@ public class GetReachabilities {
 
         Stream.Builder<ReachabilityPair> results = Stream.builder();
 
-        result.forEach((tail, value) -> value.keySet().forEach(head -> {
-            results.add(new ReachabilityPair(tail, head));
-        }));
+        result.forEach((tail, value) -> value.keySet().forEach(head -> results.add(new ReachabilityPair(tail, head))));
 
         return results.build();
     }

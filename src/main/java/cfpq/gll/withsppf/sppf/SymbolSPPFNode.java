@@ -1,14 +1,14 @@
 package cfpq.gll.withsppf.sppf;
 
-import cfpq.gll.rsm.symbol.Symbol;
-import org.neo4j.graphdb.Node;
+import cfpq.gll.graph.Neo4jNode;
+import cfpq.gll.rsm.symbol.Nonterminal;
 
 import java.util.Objects;
 
 public class SymbolSPPFNode extends ParentSPPFNode {
-    public Symbol symbol;
+    public Nonterminal symbol;
 
-    public SymbolSPPFNode(Node leftExtent, Node rightExtent, Symbol symbol) {
+    public SymbolSPPFNode(Neo4jNode leftExtent, Neo4jNode rightExtent, Nonterminal symbol) {
         super(leftExtent, rightExtent);
         this.symbol = symbol;
         this.hashCode = Objects.hash(leftExtent, rightExtent, symbol);
@@ -17,10 +17,10 @@ public class SymbolSPPFNode extends ParentSPPFNode {
     @Override
     public String toString() {
         return "SymbolSPPFNode{" +
-                "symbol=" + symbol +
-                ", leftExtent=" + leftExtent +
-                ", rightExtent=" + rightExtent +
-                '}';
+            "symbol=" + symbol +
+            ", leftExtent=" + leftExtent +
+            ", rightExtent=" + rightExtent +
+            '}';
     }
 
     @Override
@@ -31,8 +31,4 @@ public class SymbolSPPFNode extends ParentSPPFNode {
         return symbol.equals(that.symbol);
     }
 
-    @Override
-    public boolean hasSymbol(Symbol symbol) {
-        return this.symbol == symbol;
-    }
 }

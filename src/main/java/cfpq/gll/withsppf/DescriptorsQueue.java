@@ -1,8 +1,8 @@
 package cfpq.gll.withsppf;
 
+import cfpq.gll.graph.Neo4jNode;
 import cfpq.gll.rsm.RSMState;
 import cfpq.gll.withsppf.sppf.SPPFNode;
-import org.neo4j.graphdb.Node;
 
 import java.util.ArrayDeque;
 import java.util.HashMap;
@@ -10,10 +10,10 @@ import java.util.HashSet;
 import java.util.Objects;
 
 public class DescriptorsQueue {
-    public ArrayDeque<Descriptor> todo = new ArrayDeque<Descriptor>();
-    public HashMap<Node, HashSet<Descriptor>> created = new HashMap<>();
+    public ArrayDeque<Descriptor> todo = new ArrayDeque<>();
+    public HashMap<Neo4jNode, HashSet<Descriptor>> created = new HashMap<>();
 
-    public void add(RSMState rsmState, GSSNode gssNode, SPPFNode sppfNode, Node pos) {
+    public void add(RSMState rsmState, GSSNode gssNode, SPPFNode sppfNode, Neo4jNode pos) {
         var descriptor = new Descriptor(rsmState, gssNode, sppfNode, pos);
         if (!created.containsKey(pos)) {
             created.put(pos, new HashSet<>());
@@ -31,14 +31,14 @@ public class DescriptorsQueue {
         return todo.isEmpty();
     }
 
-    class Descriptor {
+    static class Descriptor {
         public RSMState rsmState;
         public GSSNode gssNode;
         public SPPFNode sppfNode;
-        public Node pos;
+        public Neo4jNode pos;
         public Integer hashCode;
 
-        public Descriptor(RSMState rsmState, GSSNode gssNode, SPPFNode sppfNode, Node pos) {
+        public Descriptor(RSMState rsmState, GSSNode gssNode, SPPFNode sppfNode, Neo4jNode pos) {
             this.rsmState = rsmState;
             this.gssNode = gssNode;
             this.sppfNode = sppfNode;
@@ -49,11 +49,11 @@ public class DescriptorsQueue {
         @Override
         public String toString() {
             return "Descriptor{" +
-                    "rsmState=" + rsmState +
-                    ", gssNode=" + gssNode +
-                    ", sppfNode=" + sppfNode +
-                    ", pos=" + pos +
-                    '}';
+                "rsmState=" + rsmState +
+                ", gssNode=" + gssNode +
+                ", sppfNode=" + sppfNode +
+                ", pos=" + pos +
+                '}';
         }
 
         @Override

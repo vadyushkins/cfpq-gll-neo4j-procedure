@@ -1,5 +1,6 @@
 package cfpq.gll.withsppf;
 
+import cfpq.gll.graph.Neo4jNode;
 import cfpq.gll.rsm.RSMNonterminalEdge;
 import cfpq.gll.rsm.RSMState;
 import cfpq.gll.rsm.RSMTerminalEdge;
@@ -9,7 +10,6 @@ import cfpq.gll.withsppf.sppf.*;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.RelationshipType;
-import org.neo4j.internal.helpers.collection.Pair;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,6 +24,7 @@ public class GLL {
     public HashMap<GSSNode, HashSet<SPPFNode>> poppedGSSNodes = new HashMap<>();
     public HashMap<GSSNode, GSSNode> createdGSSNodes = new HashMap<>();
     public HashMap<SPPFNode, SPPFNode> createdSPPFNodes = new HashMap<>();
+    public HashMap<PackedSPPFNode, PackedSPPFNode> createdPackedSPPFNodes = new HashMap<>();
     public HashMap<Node, HashMap<Node, SPPFNode>> parseResult = new HashMap<>();
 
     public GLL(RSMState startState, List<Node> startGraphNodes) {
@@ -31,7 +32,7 @@ public class GLL {
         this.startGraphNodes = startGraphNodes;
     }
 
-    public GSSNode getOrCreateGSSNode(Nonterminal nonterminal, Node pos) {
+    public GSSNode getOrCreateGSSNode(Nonterminal nonterminal, Neo4jNode pos) {
         GSSNode gssNode = new GSSNode(nonterminal, pos);
         if (!createdGSSNodes.containsKey(gssNode)) {
             createdGSSNodes.put(gssNode, gssNode);
@@ -41,7 +42,8 @@ public class GLL {
 
     public HashMap<Node, HashMap<Node, SPPFNode>> parse() {
         for (Node graphNode : startGraphNodes) {
-            queue.add(startState, getOrCreateGSSNode(startState.nonterminal, graphNode), null, graphNode);
+            queue.add(startState, getOrCreateGSSNode(startState.nonterminal, new Neo4jNode(graphNode)), null,
+                new Neo4jNode(graphNode));
         }
 
         while (!queue.isEmpty()) {
@@ -52,7 +54,7 @@ public class GLL {
         return parseResult;
     }
 
-    public void parse(RSMState state, GSSNode gssNode, SPPFNode sppfNode, Node pos) {
+    public void parse(RSMState state, GSSNode gssNode, SPPFNode sppfNode, Neo4jNode pos) {
         SPPFNode curSPPFNode;
 
         if (state.isStart && state.isFinal) {
@@ -62,31 +64,31 @@ public class GLL {
         }
 
         for (RSMTerminalEdge rsmEdge : state.outgoingTerminalEdges) {
-            pos.getRelationships(Direction.OUTGOING, RelationshipType.withName(rsmEdge.terminal.value)).stream().forEach(relationship -> {
-                Node head = relationship.getEndNode();
+            pos.node.getRelationships(Direction.OUTGOING, RelationshipType.withName(rsmEdge.terminal.value)).stream().forEach(relationship -> {
+                Neo4jNode head = new Neo4jNode(relationship.getEndNode());
                 queue.add(
+                    rsmEdge.head,
+                    gssNode,
+                    getNodeP(
                         rsmEdge.head,
-                        gssNode,
-                        getNodeP(
-                                rsmEdge.head,
-                                curSPPFNode,
-                                getOrCreateTerminalSPPFNode(
-                                        rsmEdge.terminal,
-                                        pos,
-                                        head
-                                )
-                        ),
-                        head
+                        curSPPFNode,
+                        getOrCreateTerminalSPPFNode(
+                            rsmEdge.terminal,
+                            pos,
+                            head
+                        )
+                    ),
+                    head
                 );
             });
         }
 
         for (RSMNonterminalEdge rsmEdge : state.outgoingNonterminalEdges) {
             queue.add(
-                    rsmEdge.nonterminal.startState,
-                    createGSSNode(rsmEdge.nonterminal, rsmEdge.head, gssNode, curSPPFNode, pos),
-                    null,
-                    pos
+                rsmEdge.nonterminal.startState,
+                createGSSNode(rsmEdge.nonterminal, rsmEdge.head, gssNode, curSPPFNode, pos),
+                null,
+                pos
             );
         }
 
@@ -95,33 +97,33 @@ public class GLL {
         }
     }
 
-    public void pop(GSSNode gssNode, SPPFNode sppfNode, Node pos) {
+    public void pop(GSSNode gssNode, SPPFNode sppfNode, Neo4jNode pos) {
         if (!poppedGSSNodes.containsKey(gssNode)) {
             poppedGSSNodes.put(gssNode, new HashSet<>());
         }
         poppedGSSNodes.get(gssNode).add(sppfNode);
-        for (Map.Entry<Pair<RSMState, SPPFNode>, HashSet<GSSNode>> e : gssNode.edges.entrySet()) {
+        for (Map.Entry<GSSNode.Pair, HashSet<GSSNode>> e : gssNode.edges.entrySet()) {
             for (GSSNode u : e.getValue()) {
                 queue.add(
-                        e.getKey().first(),
-                        u,
-                        getNodeP(
-                                e.getKey().first(),
-                                e.getKey().other(),
-                                sppfNode
-                        ),
-                        pos
+                    e.getKey().rsmState,
+                    u,
+                    getNodeP(
+                        e.getKey().rsmState,
+                        e.getKey().sppfNode,
+                        sppfNode
+                    ),
+                    pos
                 );
             }
         }
     }
 
     public GSSNode createGSSNode(
-            Nonterminal nonterminal,
-            RSMState state,
-            GSSNode gssNode,
-            SPPFNode sppfNode,
-            Node pos
+        Nonterminal nonterminal,
+        RSMState state,
+        GSSNode gssNode,
+        SPPFNode sppfNode,
+        Neo4jNode pos
     ) {
         GSSNode v = getOrCreateGSSNode(nonterminal, pos);
 
@@ -129,14 +131,14 @@ public class GLL {
             if (poppedGSSNodes.containsKey(v)) {
                 for (SPPFNode z : poppedGSSNodes.get(v)) {
                     queue.add(
+                        state,
+                        gssNode,
+                        getNodeP(
                             state,
-                            gssNode,
-                            getNodeP(
-                                    state,
-                                    sppfNode,
-                                    z
-                            ),
-                            z.rightExtent
+                            sppfNode,
+                            z
+                        ),
+                        z.rightExtent
                     );
                 }
             }
@@ -146,32 +148,32 @@ public class GLL {
     }
 
     public SPPFNode getNodeP(RSMState state, SPPFNode sppfNode, SPPFNode nextSPPFNode) {
-        Node leftExtent = (null == sppfNode) || (null == sppfNode.leftExtent)
-                ? nextSPPFNode.leftExtent
-                : sppfNode.leftExtent;
+        Neo4jNode leftExtent = (null == sppfNode) || (null == sppfNode.leftExtent)
+            ? nextSPPFNode.leftExtent
+            : sppfNode.leftExtent;
 
-        Node rightExtent = nextSPPFNode.rightExtent;
+        Neo4jNode rightExtent = nextSPPFNode.rightExtent;
 
         ParentSPPFNode y = state.isFinal
-                ? getOrCreateSymbolSPPFNode(state.nonterminal, leftExtent, rightExtent)
-                : getOrCreateItemSPPFNode(state, leftExtent, rightExtent);
+            ? getOrCreateSymbolSPPFNode(state.nonterminal, leftExtent, rightExtent)
+            : getOrCreateItemSPPFNode(state, leftExtent, rightExtent);
 
         y.kids.add(
-                new PackedSPPFNode(
-                        nextSPPFNode.leftExtent,
-                        state,
-                        sppfNode,
-                        nextSPPFNode
-                )
+            getOrCreatePackedSPPFNode(
+                nextSPPFNode.leftExtent,
+                state,
+                sppfNode,
+                nextSPPFNode
+            )
         );
 
         return y;
     }
 
     public SPPFNode getOrCreateTerminalSPPFNode(
-            Terminal terminal,
-            Node leftExtent,
-            Node rightExtent
+        Terminal terminal,
+        Neo4jNode leftExtent,
+        Neo4jNode rightExtent
     ) {
         TerminalSPPFNode y = new TerminalSPPFNode(leftExtent, rightExtent, terminal);
         if (!createdSPPFNodes.containsKey(y)) {
@@ -181,9 +183,9 @@ public class GLL {
     }
 
     public ParentSPPFNode getOrCreateItemSPPFNode(
-            RSMState state,
-            Node leftExtent,
-            Node rightExtent
+        RSMState state,
+        Neo4jNode leftExtent,
+        Neo4jNode rightExtent
     ) {
         ItemSPPFNode y = new ItemSPPFNode(leftExtent, rightExtent, state);
         if (!createdSPPFNodes.containsKey(y)) {
@@ -192,10 +194,23 @@ public class GLL {
         return (ParentSPPFNode) createdSPPFNodes.get(y);
     }
 
+    public PackedSPPFNode getOrCreatePackedSPPFNode(
+        Neo4jNode pivot,
+        RSMState rsmState,
+        SPPFNode leftSPPFNode,
+        SPPFNode rightSPPFNode
+    ) {
+        PackedSPPFNode y = new PackedSPPFNode(pivot, rsmState, leftSPPFNode, rightSPPFNode);
+        if (!createdPackedSPPFNodes.containsKey(y)) {
+            createdPackedSPPFNodes.put(y, y);
+        }
+        return createdPackedSPPFNodes.get(y);
+    }
+
     public SymbolSPPFNode getOrCreateSymbolSPPFNode(
-            Nonterminal nonterminal,
-            Node leftExtent,
-            Node rightExtent
+        Nonterminal nonterminal,
+        Neo4jNode leftExtent,
+        Neo4jNode rightExtent
     ) {
         SymbolSPPFNode y = new SymbolSPPFNode(leftExtent, rightExtent, nonterminal);
         if (!createdSPPFNodes.containsKey(y)) {
@@ -203,13 +218,13 @@ public class GLL {
         }
         SymbolSPPFNode result = (SymbolSPPFNode) createdSPPFNodes.get(y);
         if (
-                nonterminal == startState.nonterminal &&
-                        startGraphNodes.contains(leftExtent)
+            nonterminal == startState.nonterminal &&
+                startGraphNodes.contains(leftExtent.node)
         ) {
-            if (!parseResult.containsKey(leftExtent)) {
-                parseResult.put(leftExtent, new HashMap<>());
+            if (!parseResult.containsKey(leftExtent.node)) {
+                parseResult.put(leftExtent.node, new HashMap<>());
             }
-            parseResult.get(leftExtent).put(rightExtent, result);
+            parseResult.get(leftExtent.node).put(rightExtent.node, result);
         }
         return result;
     }

@@ -1,14 +1,14 @@
 package cfpq.gll.withsppf.sppf;
 
+import cfpq.gll.graph.Neo4jNode;
 import cfpq.gll.rsm.symbol.Terminal;
-import org.neo4j.graphdb.Node;
 
 import java.util.Objects;
 
 public class TerminalSPPFNode extends SPPFNode {
     public Terminal terminal;
 
-    public TerminalSPPFNode(Node leftExtent, Node rightExtent, Terminal terminal) {
+    public TerminalSPPFNode(Neo4jNode leftExtent, Neo4jNode rightExtent, Terminal terminal) {
         super(leftExtent, rightExtent);
         this.terminal = terminal;
         this.hashCode = Objects.hash(leftExtent, rightExtent, terminal);
@@ -17,10 +17,10 @@ public class TerminalSPPFNode extends SPPFNode {
     @Override
     public String toString() {
         return "TerminalSPPFNode{" +
-                "terminal=" + terminal +
-                ", leftExtent=" + leftExtent +
-                ", rightExtent=" + rightExtent +
-                '}';
+            "terminal=" + terminal +
+            ", leftExtent=" + leftExtent +
+            ", rightExtent=" + rightExtent +
+            '}';
     }
 
     @Override

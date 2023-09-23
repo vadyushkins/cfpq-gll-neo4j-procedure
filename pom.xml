@@ -35,7 +35,7 @@
                  project, their scope should normally be `compile` -->
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j</artifactId>
-            <version>${neo4j.version}</version>
+            <version>5.5.0</version>
             <scope>provided</scope>
         </dependency>
 
@@ -45,7 +45,7 @@
                  a specific Procedure, which is nice for writing tests. -->
             <groupId>org.neo4j.test</groupId>
             <artifactId>neo4j-harness</artifactId>
-            <version>${neo4j.version}</version>
+            <version>5.5.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -53,21 +53,21 @@
             <!-- Used to send cypher statements to our procedure. -->
             <groupId>org.neo4j.driver</groupId>
             <artifactId>neo4j-java-driver</artifactId>
-            <version>${neo4j-java-driver.version}</version>
+            <version>5.6.0</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit-jupiter.version}</version>
+            <version>5.9.2</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>${assertj.version}</version>
+            <version>3.24.2</version>
             <scope>test</scope>
         </dependency>
 

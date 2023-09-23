@@ -12,6 +12,19 @@ public class RSMBuilder {
     public HashMap<Integer, RSMState> rsmStates = new HashMap<>();
     public HashMap<Nonterminal, Nonterminal> nonterminals = new HashMap<>();
 
+    public RSMState makeRSMState(
+        Integer id,
+        Nonterminal nonterminal,
+        boolean isStart,
+        boolean isFinal
+    ) {
+        RSMState y = new RSMState(id, nonterminal, isStart, isFinal);
+        if (!rsmStates.containsKey(y.hashCode)) {
+            rsmStates.put(y.hashCode, y);
+        }
+        return rsmStates.get(y.hashCode);
+    }
+
     public Nonterminal makeNonterminal(String name) {
         Nonterminal y = new Nonterminal(name);
         if (!nonterminals.containsKey(y)) {
@@ -22,90 +35,92 @@ public class RSMBuilder {
 
     public RSMState createRSM(String grammar) {
         Pattern startStateRegex = Pattern.compile(
-                "^StartState\\(" +
-                        "id=(?<idValue>.*)," +
-                        "nonterminal=Nonterminal\\((?<nonterminalValue>.*)\\)," +
-                        "isStart=(?<isStartValue>.*)," +
-                        "isFinal=(?<isFinalValue>.*)" +
-                        "\\)$"
+            "^StartState\\(" +
+                "id=(?<id>.*)," +
+                "nonterminal=Nonterminal\\((?<nonterminal>.*)\\)," +
+                "isStart=(?<isStart>.*)," +
+                "isFinal=(?<isFinal>.*)" +
+                "\\)$"
         );
 
         Pattern rsmStateRegex = Pattern.compile(
-                "^State\\(" +
-                        "id=(?<idValue>.*)," +
-                        "nonterminal=Nonterminal\\((?<nonterminalValue>.*)\\)," +
-                        "isStart=(?<isStartValue>.*)," +
-                        "isFinal=(?<isFinalValue>.*)" +
-                        "\\)$"
+            "^State\\(" +
+                "id=(?<id>.*)," +
+                "nonterminal=Nonterminal\\((?<nonterminal>.*)\\)," +
+                "isStart=(?<isStart>.*)," +
+                "isFinal=(?<isFinal>.*)" +
+                "\\)$"
         );
 
         Pattern rsmTerminalEdgeRegex = Pattern.compile(
-                "^TerminalEdge\\(" +
-                        "tail=(?<tailValue>.*)," +
-                        "head=(?<headValue>.*)," +
-                        "terminal=Terminal\\((?<terminalValue>.*)\\)" +
-                        "\\)$"
+            "^TerminalEdge\\(" +
+                "tail=(?<tail>.*)," +
+                "head=(?<head>.*)," +
+                "terminal=Terminal\\((?<terminal>.*)\\)" +
+                "\\)$"
         );
 
         Pattern rsmNonterminalEdgeRegex = Pattern.compile(
-                "^NonterminalEdge\\(" +
-                        "tail=(?<tailValue>.*)," +
-                        "head=(?<headValue>.*)," +
-                        "nonterminal=Nonterminal\\((?<nonterminalValue>.*)\\)" +
-                        "\\)$"
+            "^NonterminalEdge\\(" +
+                "tail=(?<tail>.*)," +
+                "head=(?<head>.*)," +
+                "nonterminal=Nonterminal\\((?<nonterminal>.*)\\)" +
+                "\\)$"
         );
 
         for (String line : grammar.split(";")) {
             Matcher startStateRegexMatcher = startStateRegex.matcher(line);
             if (startStateRegexMatcher.matches()) {
-                startRSMState = new RSMStateBuilder()
-                        .setId(Integer.parseInt(startStateRegexMatcher.group("idValue")))
-                        .setNonterminal(makeNonterminal(startStateRegexMatcher.group("nonterminalValue")))
-                        .setIsStart(Boolean.parseBoolean(startStateRegexMatcher.group("isStartValue")))
-                        .setIsFinal(Boolean.parseBoolean(startStateRegexMatcher.group("isFinalValue")))
-                        .createRSMState();
-                if (!rsmStates.containsKey(startRSMState)) {
-                    rsmStates.put(startRSMState.id, startRSMState);
+                Nonterminal tmpNonterminal = makeNonterminal(startStateRegexMatcher.group("nonterminal"));
+                startRSMState = makeRSMState(
+                    Integer.parseInt(startStateRegexMatcher.group("id")),
+                    tmpNonterminal,
+                    Boolean.parseBoolean(startStateRegexMatcher.group("isStart")),
+                    Boolean.parseBoolean(startStateRegexMatcher.group("isFinal"))
+                );
+                if (startRSMState.isStart) {
+                    tmpNonterminal.startState = startRSMState;
                 }
                 continue;
             }
 
             Matcher rsmStateRegexMatcher = rsmStateRegex.matcher(line);
             if (rsmStateRegexMatcher.matches()) {
-                RSMState rsmState = new RSMStateBuilder()
-                        .setId(Integer.parseInt(rsmStateRegexMatcher.group("idValue")))
-                        .setNonterminal(makeNonterminal(rsmStateRegexMatcher.group("nonterminalValue")))
-                        .setIsStart(Boolean.parseBoolean(rsmStateRegexMatcher.group("isStartValue")))
-                        .setIsFinal(Boolean.parseBoolean(rsmStateRegexMatcher.group("isFinalValue")))
-                        .createRSMState();
-                if (!rsmStates.containsKey(rsmState.id)) {
-                    rsmStates.put(rsmState.id, rsmState);
+                Nonterminal tmpNonterminal = makeNonterminal(rsmStateRegexMatcher.group("nonterminal"));
+                RSMState rsmState = makeRSMState(
+                    Integer.parseInt(rsmStateRegexMatcher.group("id")),
+                    tmpNonterminal,
+                    Boolean.parseBoolean(rsmStateRegexMatcher.group("isStart")),
+                    Boolean.parseBoolean(rsmStateRegexMatcher.group("isFinal"))
+                );
+                if (rsmState.isStart) {
+                    tmpNonterminal.startState = rsmState;
                 }
                 continue;
             }
 
             Matcher rsmTerminalEdgeRegexMatcher = rsmTerminalEdgeRegex.matcher(line);
             if (rsmTerminalEdgeRegexMatcher.matches()) {
-                RSMState tailRSMState = rsmStates.get(Integer.parseInt(rsmTerminalEdgeRegexMatcher.group("tailValue")));
-                RSMState headRSMState = rsmStates.get(Integer.parseInt(rsmTerminalEdgeRegexMatcher.group("headValue")));
+                RSMState tailRSMState = rsmStates.get(Integer.parseInt(rsmTerminalEdgeRegexMatcher.group("tail")));
+                RSMState headRSMState = rsmStates.get(Integer.parseInt(rsmTerminalEdgeRegexMatcher.group("head")));
                 tailRSMState.addTerminalEdge(
-                        new RSMTerminalEdge(
-                                new Terminal(rsmTerminalEdgeRegexMatcher.group("terminalValue")),
-                                headRSMState
-                        )
+                    new RSMTerminalEdge(
+                        new Terminal(rsmTerminalEdgeRegexMatcher.group("terminal")),
+                        headRSMState
+                    )
                 );
                 continue;
             }
 
             Matcher rsmNonterminalEdgeRegexMatcher = rsmNonterminalEdgeRegex.matcher(line);
             if (rsmNonterminalEdgeRegexMatcher.matches()) {
-                RSMState tailRSMState = rsmStates.get(Integer.parseInt(rsmNonterminalEdgeRegexMatcher.group("tailValue")));
-                RSMState headRSMState = rsmStates.get(Integer.parseInt(rsmNonterminalEdgeRegexMatcher.group("headValue")));
+                RSMState tailRSMState = rsmStates.get(Integer.parseInt(rsmNonterminalEdgeRegexMatcher.group("tail")));
+                RSMState headRSMState = rsmStates.get(Integer.parseInt(rsmNonterminalEdgeRegexMatcher.group("head")));
                 tailRSMState.addNonterminalEdge(
-                        new RSMNonterminalEdge(
-                                makeNonterminal(rsmNonterminalEdgeRegexMatcher.group("terminalValue")),
-                                headRSMState
-                        )
+                    new RSMNonterminalEdge(
+                        makeNonterminal(rsmNonterminalEdgeRegexMatcher.group("nonterminal")),
+                        headRSMState
+                    )
                 );
             }
         }

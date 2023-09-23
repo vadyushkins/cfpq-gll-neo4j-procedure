@@ -16,9 +16,9 @@ public class RSMNonterminalEdge implements RSMEdge {
     @Override
     public String toString() {
         return "RSMNonterminalEdge{" +
-                "nonterminal=" + nonterminal +
-                ", head=" + head +
-                '}';
+            "nonterminal=" + nonterminal +
+            ", head=" + head +
+            '}';
     }
 
     @Override

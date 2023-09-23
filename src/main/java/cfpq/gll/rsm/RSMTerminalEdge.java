@@ -16,9 +16,9 @@ public class RSMTerminalEdge implements RSMEdge {
     @Override
     public String toString() {
         return "RSMTerminalEdge{" +
-                "terminal=" + terminal +
-                ", head=" + head +
-                '}';
+            "terminal=" + terminal +
+            ", head=" + head +
+            '}';
     }
 
     @Override

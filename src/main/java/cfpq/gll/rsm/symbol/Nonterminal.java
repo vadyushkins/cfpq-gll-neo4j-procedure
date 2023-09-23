@@ -15,8 +15,8 @@ public class Nonterminal implements Symbol {
     @Override
     public String toString() {
         return "Nonterminal{" +
-                "name='" + name + '\'' +
-                '}';
+            "name='" + name + '\'' +
+            '}';
     }
 
     @Override
