@@ -1,8 +1,9 @@
-package cfpq.gll.withsppf;
+package cfpq.gll;
 
 
 import cfpq.gll.rsm.RSMBuilder;
 import cfpq.gll.rsm.RSMState;
+import cfpq.gll.withsppf.GLL;
 import cfpq.gll.withsppf.sppf.SPPFNode;
 import org.neo4j.graphdb.Node;
 import org.neo4j.procedure.Description;
@@ -13,10 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class GetReachabilities {
-    @Procedure(name = "cfpq.gll.withsppf.getReachabilities")
+public class GetPaths {
+    @Procedure(name = "cfpq.gll.getPaths")
     @Description("Get reachability pairs in graph by cfg.")
-    public Stream<ReachabilityPair> getReachabilities(
+    public Stream<ReachabilityPair> getPaths(
         @Name("nodes") List<Node> nodes,
         @Name("grammar") String grammar
     ) {
