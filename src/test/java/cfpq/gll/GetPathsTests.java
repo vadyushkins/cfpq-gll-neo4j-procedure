@@ -30,7 +30,7 @@ public class GetPathsTests {
     private Driver driver;
     private Neo4j embeddedDatabaseServer;
 
-    private static Stream<Arguments> provideBenchmarks() {
+    private static Stream<Arguments> provideTests() {
         return Stream.of(
             Arguments.of("skos", 144, 30),
             Arguments.of("generations", 129, 12),
@@ -73,8 +73,8 @@ public class GetPathsTests {
     }
 
     @ParameterizedTest
-    @MethodSource("provideBenchmarks")
-    public void runBenchmark(String graph, int numberOfNodes, int expectedResultsSize) throws IOException {
+    @MethodSource("provideTests")
+    public void runTests(String graph, int numberOfNodes, int expectedResultsSize) throws IOException {
         Path grammarPath = Paths.get("src", "test", "resources", "grammar/g1.txt");
         final String grammar = Files.readString(grammarPath).replace("\n", ";");
 
