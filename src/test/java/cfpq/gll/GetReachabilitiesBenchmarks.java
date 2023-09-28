@@ -37,30 +37,30 @@ public class GetReachabilitiesBenchmarks {
     private static Stream<Arguments> provideBenchmarks() {
         // <GRAPH_NAME> <COLD_TRIES> <REAL_TRIES>
         return Stream.of(
-            Arguments.of("core", 1, 1)
-//            Arguments.of("pathways", 1, 1),
-//            Arguments.of("go_hierarchy", 1, 1),
-//            Arguments.of("enzyme", 1, 1),
-//            Arguments.of("eclass", 1, 1),
-//            Arguments.of("go", 1, 1),
-//            Arguments.of("geospecies", 1, 1),
-//            Arguments.of("taxonomy", 1, 1),
-//
-//            Arguments.of("apache", 1, 1),
-//            Arguments.of("block", 1, 1),
-//            Arguments.of("fs", 1, 1),
-//            Arguments.of("ipc", 1, 1),
-//            Arguments.of("lib", 1, 1),
-//            Arguments.of("mm", 1, 1),
-//            Arguments.of("net", 1, 1),
-//            Arguments.of("postgre", 1, 1),
-//            Arguments.of("security", 1, 1),
-//            Arguments.of("sound", 1, 1),
-//            Arguments.of("init", 1, 1),
-//            Arguments.of("arch", 1, 1),
-//            Arguments.of("crypto", 1, 1),
-//            Arguments.of("drivers", 1, 1),
-//            Arguments.of("kernel", 1, 1)
+            Arguments.of("core", 1, 1),
+            Arguments.of("pathways", 1, 1),
+            Arguments.of("go_hierarchy", 1, 1),
+            Arguments.of("enzyme", 1, 1),
+            Arguments.of("eclass", 1, 1),
+            Arguments.of("go", 1, 1),
+            Arguments.of("geospecies", 1, 1),
+            Arguments.of("taxonomy", 1, 1),
+
+            Arguments.of("apache", 1, 1),
+            Arguments.of("block", 1, 1),
+            Arguments.of("fs", 1, 1),
+            Arguments.of("ipc", 1, 1),
+            Arguments.of("lib", 1, 1),
+            Arguments.of("mm", 1, 1),
+            Arguments.of("net", 1, 1),
+            Arguments.of("postgre", 1, 1),
+            Arguments.of("security", 1, 1),
+            Arguments.of("sound", 1, 1),
+            Arguments.of("init", 1, 1),
+            Arguments.of("arch", 1, 1),
+            Arguments.of("crypto", 1, 1),
+            Arguments.of("drivers", 1, 1),
+            Arguments.of("kernel", 1, 1)
         );
     }
 
