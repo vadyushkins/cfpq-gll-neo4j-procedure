@@ -70,6 +70,7 @@ public class GetReachabilitiesBenchmarks {
             .withDisabledServer()
             .withProcedure(GetReachabilities.class)
             .withConfig(GraphDatabaseSettings.memory_transaction_global_max_size, Long.parseLong("0"))
+            .withConfig(GraphDatabaseSettings.log_queries, GraphDatabaseSettings.LogQueryLevel.OFF)
             .build();
 
         this.driver = GraphDatabase.driver(embeddedDatabaseServer.boltURI());
