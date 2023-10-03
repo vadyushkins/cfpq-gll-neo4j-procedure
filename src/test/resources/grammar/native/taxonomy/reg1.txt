@@ -1,0 +1,1 @@
+(s)-[:type | :partOfLineage]->{0,}(t)

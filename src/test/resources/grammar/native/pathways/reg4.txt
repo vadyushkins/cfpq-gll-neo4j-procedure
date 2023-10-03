@@ -1,0 +1,1 @@
+(s)-[:type | :subClassOf]->{1,}()-[:label | :narrower]->{1,}(t)

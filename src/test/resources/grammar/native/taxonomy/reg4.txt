@@ -1,0 +1,1 @@
+(s)-[:type | :partOfLineage]->{1,}()-[:subClassOf | :scientificName]->{1,}(t)

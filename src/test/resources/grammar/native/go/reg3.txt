@@ -1,0 +1,1 @@
+(s)-[:type | :hasDbXref | :annotatedTarget]->{1,}(t)

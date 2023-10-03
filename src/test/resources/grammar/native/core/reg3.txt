@@ -1,0 +1,1 @@
+(s)-[:type | :isDefinedBy | :label]->{1,}(t)

@@ -1,0 +1,1 @@
+(s)-[:type | :subClassOf]->{0,}(t)

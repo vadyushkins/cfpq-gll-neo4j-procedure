@@ -1,0 +1,1 @@
+(s)-[:type | :comment]->{1,}()-[:altLabel | :subClassOf]->{1,}(t)
