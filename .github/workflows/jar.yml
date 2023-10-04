@@ -21,5 +21,4 @@ jobs:
     - name: Download a Build Artifact
       uses: actions/download-artifact@v2.1.1
       with:
-        # Artifact name
-        name: cfpq-gll-neo4j-procedure
+        path: build/
