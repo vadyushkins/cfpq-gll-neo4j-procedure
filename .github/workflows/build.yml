@@ -10,9 +10,9 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "readme" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "readme" ]
 
 jobs:
   build:
@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@readme
     - name: Create release
       uses: Roang-zero1/github-create-release-action@v2
       env:
