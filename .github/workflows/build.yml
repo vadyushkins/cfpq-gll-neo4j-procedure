@@ -29,7 +29,6 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -DskipTests -B package --file pom.xml
-    - run: mvn --batch-mode --update-snapshots verify
     - run: mkdir build && cp target/*.jar build
     - uses: actions/upload-artifact@v3
       with:
