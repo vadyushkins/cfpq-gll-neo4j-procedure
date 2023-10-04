@@ -40,3 +40,4 @@ jobs:
       with:
       # Artifact name
         name: cfpq-gll-neo4j-procedure
+        path: build/
