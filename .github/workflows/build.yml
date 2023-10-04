@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     steps:
-    - uses: actions/checkout@readme
+    - uses: actions/checkout@main
     - name: Create release
       uses: Roang-zero1/github-create-release-action@v2
       env:
