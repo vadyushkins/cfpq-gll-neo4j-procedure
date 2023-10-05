@@ -109,3 +109,9 @@ Respective RSM-s are presented below.
 <img src="https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/e7f23dd4-8bd4-45cf-9cc6-0d3a0b3d2fed" width="400">
 <img src="https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/a04a7eb7-f42e-4b72-aa94-d884a247a143" width="500">
 <img src="https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/83371945-ebd7-4c01-b102-66456abe857a" width="500">
+
+**Evaluation**
+The starting sets for the multiple sources querying are generated from all vertices of a graph with a random permutation. Chunks of size 1, 10, 100 were used.
+
+Results for queries G<sub>1</sub>, G<sub>2</sub> and Geo are presented below respectively. 
+
