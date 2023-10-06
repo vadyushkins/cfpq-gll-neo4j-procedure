@@ -12,7 +12,7 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
-    branches: [ "main", "readme" ]
+    branches: [ "main" ]
 
 jobs:
   build:
