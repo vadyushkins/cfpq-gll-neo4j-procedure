@@ -1,5 +1,11 @@
 
 <h1 align="center"> CFPQ GLL Neo4j Stored Procedure</h1>
+
+<div align="center">
+
+![Java CI with Maven](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/actions/workflows/build.yml/badge.svg) 
+
+</div>
   
 # About
 This is the implementation of the GLL-based context-free path querying (CFPQ) algorithm. The proposed algorithm solves both the reachability-only and the all-paths problems for the all-pairs and the multiple sources cases. It handles queries in Extended Backus-Naur Form (EBNF) using Recursive State Machines (RSM)
@@ -21,9 +27,9 @@ that can be deployed in the `plugin` directory of your Neo4j instance.
 Once the code is compiled, the JAR file needs to be put into the plugin's directory of Neo4j root folder.
 To call the stored procedure the following Cypher query can be used, 
 ```
-CALL cfpq.gll.getReachabilities(nodes, q)
+CALL cfpq.gll.getReachabilities(nodes, rsm)
 ```
-where `nodes` is a collection of start nodes, and `q` is a string representation (or description) of RSM specified over relations types.
+where `nodes` is a collection of start nodes, and `rsm` is a string representation of RSM specified over relations types.
 
 # Example
 ## Create graph using Cypher
