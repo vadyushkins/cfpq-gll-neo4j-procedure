@@ -7,6 +7,16 @@ This is the implementation of the GLL-based context-free path querying (CFPQ) al
 # Usage
 ## Build
 
+This project uses maven, to build a jar-file with the procedure in this
+project, simply package the project with maven:
+
+```shell
+mvn clean package
+```
+
+This will produce a jar-file,`target/cfpq-gll-neo4j-procedure-1.0.0.jar`,
+that can be deployed in the `plugin` directory of your Neo4j instance.
+
 ## Stored procedure usage
 Once the code is compiled, the JAR file needs to be put into the plugin's directory of Neo4j root folder. To call the stored procedure the following Cypher query can be used:
 ```

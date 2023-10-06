@@ -75,7 +75,7 @@ public class GetReachabilitiesTests {
     @ParameterizedTest
     @MethodSource("provideTests")
     public void runTest(String graph, int numberOfNodes, int expectedResultsSize) throws IOException {
-        Path grammarPath = Paths.get("src", "test", "resources", "grammar/g1.txt");
+        Path grammarPath = Paths.get("src", "test", "resources", "cfpq", "gll", "grammar", "g1.txt");
         final String grammar = Files.readString(grammarPath).replace("\n", ";");
 
         try (Session session = driver.session()) {
@@ -85,14 +85,27 @@ public class GetReachabilitiesTests {
                     + " ON (n.id)"
             );
 
-            for (int nodeId = 0; nodeId < numberOfNodes; ++nodeId) {
-                session.run(
-                    String.format("CREATE (:Node {id:toInteger(%s)})", nodeId)
-                );
-            }
+            String nodesPath =
+                Paths.get(
+                    "src", "test", "resources", "cfpq", "gll", "graph", graph, "nodes.csv"
+                ).toFile().getAbsolutePath();
+            session.run(
+                String.format(
+                    "LOAD CSV WITH HEADERS FROM 'file:///%s' as row CREATE (:Node {id:toInteger(row.NodeID)})",
+                    nodesPath
+                )
+            );
 
-            for (File file : Paths.get("src", "test", "resources", "graph", graph).toFile().listFiles()) {
+            File[] edgesPath =
+                Paths.get(
+                    "src", "test", "resources", "cfpq", "gll", "graph", graph
+                ).toFile().listFiles();
+            for (File file : edgesPath) {
                 String name = file.getName();
+                if (name.equals("nodes.csv")) {
+                    continue;
+                }
+
                 String path = file.getAbsolutePath();
                 String label = name.substring(0, name.length() - 4);
                 session.run(
