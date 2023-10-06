@@ -3,13 +3,13 @@
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.neo4j.example</groupId>
-    <artifactId>procedure-template</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <groupId>cfpq.gll</groupId>
+    <artifactId>cfpq-gll-neo4j-procedure</artifactId>
+    <version>1.0.0</version>
 
     <packaging>jar</packaging>
-    <name>Neo4j Procedure Template</name>
-    <description>A template project for building a Neo4j Procedure</description>
+    <name>CFPQ GLL Neo4j Procedure</name>
+    <description>Context-Free Path Querying Neo4j Procedure</description>
 
     <properties>
         <java.version>17</java.version>
