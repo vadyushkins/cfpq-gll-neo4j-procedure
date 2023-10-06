@@ -57,10 +57,10 @@ Regular queries were generated using a well-established set of templates for RPQ
 
 Used templates are presented below. 
 ```
-reg1  = (𝑎 | 𝑏)∗
+reg1  = (𝑎 | 𝑏)*
 ```
 ```
-reg2  = 𝑎∗ 𝑏∗ 
+reg2  = 𝑎* 𝑏*
 ```
 
 ```
@@ -120,22 +120,47 @@ Respective RSMs are presented below.
 <img src="https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/a04a7eb7-f42e-4b72-aa94-d884a247a143" width="500">
 <img src="https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/83371945-ebd7-4c01-b102-66456abe857a" width="500">
 
-**Evaluation**
+### Evaluation
+
 The starting sets for the multiple sources querying are generated from all vertices of a graph with a random permutation. Chunks of size 1, 10, and 100 were used.
 
-Results for queries G<sub>1</sub>, G<sub>2</sub> and Geo are presented below respectively. 
+Results for queries G<sub>1</sub>, G<sub>2</sub> and Geo are presented below respectively. The performance results are compared with matrix-based CFPQ algorithm implemented in RedisGraph by Arseniy Terekhov et al in [paper](https://dblp.org/rec/conf/edbt/TerekhovPAZG21).
+![g1_result-1](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/510fae3f-b503-49c0-9f96-f2c65ac2bd1d)
+<p align="center">
+<b>Multiple sources CFPQ reachability results for queries related to RDF analysis and G<sub>1</sub></b>
+</p>
 
-[g1_result.pdf](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/files/12828215/g1_result.pdf)
+![g2_result-1](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/d25e5d06-f6fc-443c-8117-642f516b5e5a)
+<p align="center">
+<b>Multiple sources CFPQ reachability results for queries related to RDF analysis and G<sub>2</sub></b>
+</p>
 
-[g2_result.pdf](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/files/12828217/g2_result.pdf)
+![geo_result-1](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/9739552f-bbe0-46b0-9126-a3ce1f339774)
+<p align="center">
+<b>Multiple sources CFPQ reachability results for queries related to RDF analysis and Geo</sub></b>
+</p>
 
-[geo_result.pdf](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/files/12828218/geo_result.pdf)
+---
 
-[reg1_rpq_result.pdf](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/files/12828219/reg1_rpq_result.pdf)
+Results for queries reg1, reg2, reg3 and reg4 are presented below respectively. The performance results were compared with native Neo4j solution.
+![reg1_rpq_result-1](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/5b01e9b6-efb0-44c5-9454-5ae64b9a7b3d)
+<p align="center">
+<b>Multiple sources RPQ reachability results for queries related to RDF analysis and reg1 (native solution failed with OOM on last two graphs)</b>
+</p>
 
-[reg2_rpq_result.pdf](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/files/12828222/reg2_rpq_result.pdf)
+![reg2_rpq_result-1](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/a65692de-5e07-4294-8bd1-5356e6aaa265)
+<p align="center">
+<b>Multiple sources RPQ reachability results for queries related to RDF analysis and reg2 (native solution failed with OOM on last two graphs)</sub></b>
+</p>
 
-[reg3_rpq_result.pdf](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/files/12828223/reg3_rpq_result.pdf)
+![reg3_rpq_result-1](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/3b753a8a-1cc0-4804-a830-e843d1ee384b)
+<p align="center">
+<b>Multiple sources RPQ reachability results for queries related to RDF analysis and reg3 (native solution failed with OOM on last two graphs)</b>
+</p>
 
-[reg4_rpq_result.pdf](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/files/12828224/reg4_rpq_result.pdf)
+![reg4_rpq_result-1](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/9962fafa-572e-4c69-b7f3-aa9b3c9416fb)
+<p align="center">
+<b>Multiple sources RPQ reachability results for queries related to RDF analysis and reg4 (native solution failed with OOM on last two graphs)</b>
+</p>
 
+## License 
