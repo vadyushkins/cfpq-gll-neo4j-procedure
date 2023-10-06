@@ -31,8 +31,8 @@ CALL cfpq.gll.getReachabilities(nodes, rsm)
 ```
 where `nodes` is a collection of start nodes, and `rsm` is a string representation of RSM specified over relations types.
 
-# Example
-## Create graph using Cypher
+## Example
+### Create graph using Cypher
 
 ```cypher
 CREATE (n1:Node{id:1})
@@ -48,7 +48,7 @@ CREATE (n3)-[:b]->(n4)
 CREATE (n4)-[:b]->(n3)
 ```
 
-## Run the query
+### Run the query
 
 ```cypher
 WITH
@@ -61,7 +61,7 @@ YIELD first, second
 RETURN first.id, second.id
 ```
 
-## Result
+### Result
 
 | first | second |
 |-------|--------|
