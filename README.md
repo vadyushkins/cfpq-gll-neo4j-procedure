@@ -18,10 +18,52 @@ This will produce a jar-file,`target/cfpq-gll-neo4j-procedure-1.0.0.jar`,
 that can be deployed in the `plugin` directory of your Neo4j instance.
 
 ## Stored procedure usage
-Once the code is compiled, the JAR file needs to be put into the plugin's directory of Neo4j root folder. To call the stored procedure the following Cypher query can be used:
+Once the code is compiled, the JAR file needs to be put into the plugin's directory of Neo4j root folder.
+To call the stored procedure the following Cypher query can be used, 
 ```
 CALL cfpq.gll.getReachabilities(nodes, q)
 ```
+where `nodes` is a collection of start nodes, and `q` is a string representation (or description) of RSM specified over relations types.
+
+# Example
+## Create graph using Cypher
+
+```cypher
+CREATE (n1:Node{id:1})
+CREATE (n2:Node{id:2})
+CREATE (n3:Node{id:3})
+CREATE (n4:Node{id:4})
+
+CREATE (n1)-[:a]->(n2)
+CREATE (n2)-[:a]->(n3)
+CREATE (n3)-[:a]->(n1)
+
+CREATE (n3)-[:b]->(n4)
+CREATE (n4)-[:b]->(n3)
+```
+
+## Run the query
+
+```cypher
+WITH
+    'StartState(id=0,nonterminal=Nonterminal(S),isStart=true,isFinal=true);' +
+    'TerminalEdge(tail=0,head=0,terminal=Terminal(a));' +
+    'TerminalEdge(tail=0,head=0,terminal=Terminal(b));' as rsm
+MATCH (n1:Node{id:1})
+CALL cfpq.gll.getReachabilities([n1], rsm)
+YIELD first, second
+RETURN first.id, second.id
+```
+
+## Result
+
+| first | second |
+|-------|--------|
+| 1     | 1      |
+| 1     | 2      |
+| 1     | 3      |
+| 1     | 4      |
+
 # Performance
 The evaluation of real-world graphs demonstrates that the utilization of RSMs increases the performance of query evaluation. Being implemented as a stored procedure for Neo4j, our solution demonstrates better performance than a similar solution for RedisGraph. The performance of the solution of regular path queries is comparable with the performance of the native Neo4j solution, and in some cases, it requires significantly less memory.
 
