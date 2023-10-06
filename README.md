@@ -8,16 +8,16 @@ This is the implementation of the GLL-based context-free path querying (CFPQ) al
 ## Build
 
 ## Stored procedure usage
-Once code is compiled, the JAR file is needed to be put to plugins directory of Neo4j root folder. To call the stored procedure the following Cypher query can be used:
+Once the code is compiled, the JAR file needs to be put into the plugin's directory of Neo4j root folder. To call the stored procedure the following Cypher query can be used:
 ```
 CALL cfpq.gll.getReachabilities(nodes, q)
 ```
 # Performance
-The evaluation on real-world graphs demonstrates that utilization of RSMs increases performance of query evaluation. Being implemented as a stored procedure for Neo4j, our solution demonstrates better performance than a similar solution for RedisGraph. Performance of the solution of regular path queries is comparable with performance of native Neo4j solution, and in some cases it requires significantly less memory.
+The evaluation of real-world graphs demonstrates that the utilization of RSMs increases the performance of query evaluation. Being implemented as a stored procedure for Neo4j, our solution demonstrates better performance than a similar solution for RedisGraph. The performance of the solution of regular path queries is comparable with the performance of the native Neo4j solution, and in some cases, it requires significantly less memory.
 
 **Machine configuration**: PC with Ubuntu 20.04, Intel Core i7-6700 3.40GHz CPU, DDR4 64Gb RAM.
 
-**Enviroment configuration**: 
+**Environment configuration**: 
 * OpenJDK 64-Bit Server VM Corretto-17.0.8.8.1 (build 17.0.8.1+8-LTS, mixed mode, sharing).
 * JVM heap configuration: 55Gb both xms and xmx.
 * Neo4j 5.0.12 is used. Almost all configurations are default except one:
@@ -43,7 +43,7 @@ A detailed description of the graphs is listed below.
 | Taxonomy     | 5 728 398 |  14 922 125 |    2 112 637 |  2 508 635 |                   0 |
 
 **Regular queries**
-Regular queries were generated using well-established set of templates for RPQ algorithms evaluation. Four nontrivial templates (that contains compositions of Kleene star and union) that expressible in Cypher syntax to be able to compare native Neo4j querying algorithm with this solution were chosen.
+Regular queries were generated using a well-established set of templates for RPQ algorithms evaluation. Four nontrivial templates (that contain compositions of Kleene star and union) that are expressible in Cypher syntax to be able to compare native Neo4j querying algorithm with this solution were chosen.
 
 Used templates are presented below. 
 ```
@@ -80,7 +80,7 @@ reg4 = ()-[:a | :b]->{1,}()-[:c | :d]->{1,}()
 ```
 
 **Context-Free Queries**
-All queries used in evaluation are variants of same-generation query. The inverse of an ```x``` relation and the respective edge is denoted as ```x_r```.
+All queries used in the evaluation are variants of same-generation query. The inverse of an ```x``` relation and the respective edge is denoted as ```x_r```.
 
 <br/>
 
@@ -104,23 +104,28 @@ S -> broaderTransitive S broaderTransitive_r
 
 <br/>
 
-Respective RSM-s are presented below.
+Respective RSMs are presented below.
 
 <img src="https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/e7f23dd4-8bd4-45cf-9cc6-0d3a0b3d2fed" width="400">
 <img src="https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/a04a7eb7-f42e-4b72-aa94-d884a247a143" width="500">
 <img src="https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/83371945-ebd7-4c01-b102-66456abe857a" width="500">
 
 **Evaluation**
-The starting sets for the multiple sources querying are generated from all vertices of a graph with a random permutation. Chunks of size 1, 10, 100 were used.
+The starting sets for the multiple sources querying are generated from all vertices of a graph with a random permutation. Chunks of size 1, 10, and 100 were used.
 
 Results for queries G<sub>1</sub>, G<sub>2</sub> and Geo are presented below respectively. 
 
-![image](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/06269535-af04-442c-b088-2dacf89d56b4)
-![image](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/a4dc35a7-207f-4e7f-bab7-0b6d72e76bb9)
-![image](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/8dfd6695-f41b-4154-a9bc-225ef9ffba95)
-![image](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/05d14a35-161e-4450-a0f3-f80c5522bd89)
-![image](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/47dda5aa-c33b-4186-92be-703760015530)
+[g1_result.pdf](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/files/12828215/g1_result.pdf)
 
+[g2_result.pdf](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/files/12828217/g2_result.pdf)
 
+[geo_result.pdf](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/files/12828218/geo_result.pdf)
 
+[reg1_rpq_result.pdf](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/files/12828219/reg1_rpq_result.pdf)
+
+[reg2_rpq_result.pdf](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/files/12828222/reg2_rpq_result.pdf)
+
+[reg3_rpq_result.pdf](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/files/12828223/reg3_rpq_result.pdf)
+
+[reg4_rpq_result.pdf](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/files/12828224/reg4_rpq_result.pdf)
 
