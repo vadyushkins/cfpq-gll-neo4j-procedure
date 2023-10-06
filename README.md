@@ -164,3 +164,5 @@ Results for queries reg1, reg2, reg3 and reg4 are presented below respectively. 
 </p>
 
 ## License 
+This project is licensed under Apache License 2.0. License text can be found in the 
+[license file](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/blob/main/LICENSE)
