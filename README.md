@@ -115,3 +115,12 @@ The starting sets for the multiple sources querying are generated from all verti
 
 Results for queries G<sub>1</sub>, G<sub>2</sub> and Geo are presented below respectively. 
 
+![image](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/06269535-af04-442c-b088-2dacf89d56b4)
+![image](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/a4dc35a7-207f-4e7f-bab7-0b6d72e76bb9)
+![image](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/8dfd6695-f41b-4154-a9bc-225ef9ffba95)
+![image](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/05d14a35-161e-4450-a0f3-f80c5522bd89)
+![image](https://github.com/vadyushkins/cfpq-gll-neo4j-procedure/assets/31728695/47dda5aa-c33b-4186-92be-703760015530)
+
+
+
+
